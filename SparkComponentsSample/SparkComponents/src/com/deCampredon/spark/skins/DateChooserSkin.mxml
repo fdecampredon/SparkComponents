@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+	Kap IT  -  Copyright 2011 Kap IT  -  All Rights Reserved.
+	This component is distributed under the GNU LGPL v2.1 
+	(available at : http://www.hnu.org/licences/old-licenses/lgpl-2.1.html)
+
+-->
+
+<!--- 
+	The Defaukt skin class for the DateChooser component
+	
+	@see com.deCampredon.spark.components.DateChooser
+
+	@author François de Campredon
+-->
+<s:SparkSkin xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		xmlns:s="library://ns.adobe.com/flex/spark" 
+		xmlns:mx="library://ns.adobe.com/flex/mx"
+		xmlns:fb="http://ns.adobe.com/flashbuilder/2009" 
+		xmlns:spark="http://francois.de-campredon.fr/spark-components"
+		blendMode="normal" mouseEnabled="false" 
+		alpha.disabledStates="0.5">
+	<!-- host component -->
+	<fx:Metadata>
+		[HostComponent("com.deCampredon.spark.components.DateChooser")]
+	</fx:Metadata>
+	
+	<fx:Script fb:purpose="styling">
+		<![CDATA[
+			import mx.core.FlexVersion;
+			
+			/* Define the skin elements that should not be colorized. 
+			For DateChooser, border and title background are skinned, but the content area, background, border, and title text are not. */
+			static private const exclusions:Array = ["background", "titleDisplay", "bodyGrid", "border","todayIndicator"];
+			
+			/**
+			 * @private
+			 */
+			override public function get colorizeExclusions():Array 
+			{
+				return exclusions;
+			}
+			
+			/**
+			 * @private
+			 */
+			override protected function initializationComplete():void
+			{
+				useChromeColor = true;
+				super.initializationComplete();
+			}
+			
+			/**
+			 * @private
+			 */
+			override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void
+			{
+				if (getStyle("borderVisible") == true)
+				{
+					border.visible = true;
+					background.left = background.top = background.right = background.bottom = 1;
+					contents.left = contents.top = contents.right = contents.bottom = 1;
+				}
+				else
+				{
+					border.visible = false;
+					background.left = background.top = background.right = background.bottom = 0;
+					contents.left = contents.top = contents.right = contents.bottom = 0;
+				}
+				
+				dropShadow.visible = getStyle("dropShadowVisible");
+				
+				var cr:Number = getStyle("cornerRadius");
+				var withControls:Boolean = 
+					(currentState == "disabledWithControlBar" || 
+						currentState == "normalWithControlBar");
+				
+				if (cornerRadius != cr)
+				{
+					cornerRadius = cr;
+					
+					dropShadow.tlRadius = cornerRadius;
+					dropShadow.trRadius = cornerRadius;
+					dropShadow.blRadius = withControls ? cornerRadius : 0;
+					dropShadow.brRadius = withControls ? cornerRadius : 0;
+					
+					setPartCornerRadii(topMaskRect, withControls); 
+					setPartCornerRadii(border, withControls); 
+					setPartCornerRadii(background, withControls);                
+				}
+				
+				borderStroke.color = getStyle("borderColor");
+				borderStroke.alpha = getStyle("borderAlpha");
+				backgroundFill.color = getStyle("backgroundColor");
+				backgroundFill.alpha = getStyle("backgroundAlpha");
+				
+				todayIndicatorFill.color = todayIndicatorStroke.color  = getStyle("symbolColor");
+				
+				super.updateDisplayList(unscaledWidth, unscaledHeight);
+			}
+			
+			/**
+			 * @private
+			 */  
+			private function setPartCornerRadii(target:Rect, includeBottom:Boolean):void
+			{            
+				target.topLeftRadiusX = cornerRadius;
+				target.topRightRadiusX = cornerRadius;
+				target.bottomLeftRadiusX = includeBottom ? cornerRadius : 0;
+				target.bottomRightRadiusX = includeBottom ? cornerRadius : 0;
+			}
+			
+			private var cornerRadius:Number;
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!--- com.deCampredon.spark.components.DateChooser#todayIndicator -->
+		<s:Rect id="todayIndicator" top="0" left="0" right="0" bottom="0">
+			<s:fill>
+				<s:SolidColor id="todayIndicatorFill" color="0x999999" alpha="0.2" />
+			</s:fill>
+			<s:stroke>
+				<s:SolidColorStroke id="todayIndicatorStroke" color="0x999999" alpha="0.6" />
+			</s:stroke>
+		</s:Rect>
+	</fx:Declarations>
+	<!-- states -->
+	<s:states>
+		<s:State name="normal" />
+		<s:State name="disabled" stateGroups="disabledStates"/>
+		<s:State name="normalWithYearNavigation" stateGroups="yearNavigationStates" />
+		<s:State name="disabledWithYearNavigation" stateGroups="disabledStates,yearNavigationStates" />
+	</s:states>
+	
+	
+	<!-- drop shadow can't be hittable so it stays sibling of other graphics -->
+	<!--- @private -->
+	<s:RectangularDropShadow id="dropShadow" blurX="20" blurY="20" alpha="0.32" distance="11" 
+							 angle="90" color="#000000" left="0" top="0" right="0" bottom="0"/>
+	
+	<!-- drop shadow can't be hittable so all other graphics go in this group -->
+	<s:Group left="0" right="0" top="0" bottom="0">
+		
+		<!-- top group mask -->
+		<!--- @private -->
+		<s:Group left="1" top="1" right="1" bottom="1" id="topGroupMask" >
+			<!--- @private -->
+			<s:Rect id="topMaskRect" left="0" top="0" right="0" bottom="0">
+				<s:fill>
+					<s:SolidColor alpha="0"/>
+				</s:fill>
+			</s:Rect>
+		</s:Group>
+		
+		
+		<!-- layer 1: border -->
+		<!--- @private -->
+		<s:Rect id="border" left="0" right="0" top="0" bottom="0" >
+			<s:stroke>
+				<!--- @private -->
+				<s:SolidColorStroke id="borderStroke" weight="1" />
+			</s:stroke>
+		</s:Rect>
+		
+		<!-- layer 2: background fill -->
+		<!--- Defines the appearance of the DateChooserSkin class's background. -->
+		<s:Rect id="background" left="1" top="1" right="1" bottom="1">
+			<s:fill>
+				<!--- @private
+				Defines the  DateChooserSkin class's background fill. The default color is 0xFFFFFF. -->
+				<s:SolidColor id="backgroundFill" color="#FFFFFF"/>
+			</s:fill>
+		</s:Rect>
+		
+		<!-- layer 3: contents -->
+		<!--- Contains the vertical stack of titlebar content and controlbar. -->
+		<s:Group left="1" right="1" top="1" bottom="1" id="contents">
+			<s:layout>
+				<s:VerticalLayout gap="0" horizontalAlign="justify" />
+			</s:layout>
+			
+			<!--- @private -->
+			<s:Group id="topGroup" mask="{topGroupMask}">
+				
+				<!-- layer 0: title bar fill -->
+				<!--- @private -->
+				<s:Rect id="tbFill" left="0" right="0" top="0" bottom="1">
+					<s:fill>
+						<s:LinearGradient rotation="90">
+							<s:GradientEntry color="0xE2E2E2" />
+							<s:GradientEntry color="0xD9D9D9" />
+						</s:LinearGradient>
+					</s:fill>
+				</s:Rect>
+				
+				<!-- layer 1: title bar highlight -->
+				<!--- @private -->
+				<s:Rect id="tbHilite" left="0" right="0" top="0" bottom="0">
+					<s:stroke>
+						<s:LinearGradientStroke rotation="90" weight="1">
+							<s:GradientEntry color="0xEAEAEA" />
+							<s:GradientEntry color="0xD9D9D9" />
+						</s:LinearGradientStroke>
+					</s:stroke>
+				</s:Rect>
+				
+				<!-- layer 2: title bar divider -->
+				<!--- @private -->
+				<s:Rect id="tbDiv" left="0" right="0" height="1" bottom="0">
+					<s:fill>
+						<s:SolidColor color="0xC0C0C0" />
+					</s:fill>
+				</s:Rect>
+				
+				
+				<s:HGroup verticalCenter="0" horizontalCenter="0" top="1" bottom="0" minHeight="30" verticalAlign="middle" gap="20">
+					<!-- layer 3: text -->
+					<!--- @copy spark.components.gridClasses.DateChooser#monthLabelDisplay -->
+					<s:Label id="monthLabelDisplay" maxDisplayedLines="1" verticalAlign="middle" textAlign="center" fontWeight="bold"  height="100%"/>
+					<spark:YearNavigatorSpinner id="yearNavigator" includeIn="yearNavigationStates" skinClass="com.deCampredon.spark.skins.YearNavigatorSkin"  height="100%"  />
+				</s:HGroup>
+				
+				
+				<!-- layer 5: Month Controls -->
+				<!--- @copy spark.components.gridClasses.DateChooser#prevMonthButton -->
+				<s:Button id="prevMonthButton" left="4" verticalCenter="0" skinClass="mx.skins.spark.DateChooserPrevMonthSkin" />
+				
+				<!--- @copy spark.components.gridClasses.DateChooser#nextMonthButton -->
+				<s:Button id="nextMonthButton" right="4" verticalCenter="0" skinClass="mx.skins.spark.DateChooserNextMonthSkin" />
+			</s:Group>
+			
+			
+			<!--- @copy spark.components.gridClasses.DateChooser#bodyGrid -->
+			<spark:DateChooserDataGrid id="bodyGrid" height="100%" width="100%" 
+						skinClass="com.deCampredon.spark.skins.DateChooserGridSkin" />
+		</s:Group>
+	</s:Group>
+</s:SparkSkin>

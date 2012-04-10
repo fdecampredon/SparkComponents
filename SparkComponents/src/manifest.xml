@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<componentPackage>
+	<component id="DateChooser" class="com.deCampredon.spark.components.DateChooser"/>
+	<component id="PopUpButton" class="com.deCampredon.spark.components.PopUpButton"/>
+	
+	<component id="YearNavigatorSpinner" class="com.deCampredon.spark.components.supportClass.YearNavigatorSpinner"/>
+	<component id="DateChooserDataGrid" class="com.deCampredon.spark.components.supportClass.DateChooserDataGrid"/>
+	<component id="DateChooserGrid" class="com.deCampredon.spark.components.supportClass.DateChooserGrid"/>
+</componentPackage>

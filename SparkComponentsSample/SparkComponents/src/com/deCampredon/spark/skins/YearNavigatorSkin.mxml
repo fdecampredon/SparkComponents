@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+
+	Kap IT  -  Copyright 2011 Kap IT  -  All Rights Reserved.
+	This component is distributed under the GNU LGPL v2.1 
+	(available at : http://www.hnu.org/licences/old-licenses/lgpl-2.1.html)
+
+-->
+
+<!--- 
+	skin class for the YearNavigator component
+
+	@see com.deCampredon.spark.components.DateChooser#yearNavigationEnabled
+	@see com.deCampredon.spark.components.supportClass.YearNavigatorSpinner
+
+	@author François de Campredon
+-->
+<s:SparkSkin xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark"
+    xmlns:fb="http://ns.adobe.com/flashbuilder/2009" alpha.disabled="0.5" minHeight="23" minWidth="12">
+	<fx:Metadata>[HostComponent("com.deCampredon.spark.components.supportClass.YearNavigatorSpinner")]</fx:Metadata>
+
+    <fx:Script fb:purpose="styling">
+        /* Define the skin elements that should not be colorized. 
+           For spinner, the skin itself is colorized but the individual parts are not. */
+        static private const exclusions:Array = ["decrementButton", "incrementButton"];
+
+        /**
+         * @private
+         */   
+        override public function get colorizeExclusions():Array {return exclusions;}
+        
+        /**
+         * @private
+         */
+        override protected function initializationComplete():void
+        {
+            useChromeColor = true;
+            super.initializationComplete();
+        }
+        
+    </fx:Script>
+    
+    <s:states>
+        <s:State name="normal" />
+        <s:State name="disabled" />
+    </s:states>
+    
+	<s:VGroup gap="0" verticalCenter="0" right="0">
+		<s:Button id="incrementButton" height="50%" tabEnabled="false" 
+				  skinClass="mx.skins.spark.DateChooserNextYearSkin" />
+		<s:Button id="decrementButton" height="50%" tabEnabled="false" 
+				  skinClass="mx.skins.spark.DateChooserPrevYearSkin" />
+	</s:VGroup>
+	
+	
+	<!--- The default class is NumericStepperTextInputSkin.
+			@copy spark.components.NumericStepper#textDisplay
+			@see spark.skins.spark.NumericStepperTextInputSkin -->
+	<s:Label id="textDisplay" left="0" top="0" right="14" bottom="0" verticalAlign="middle" />
+
+</s:SparkSkin>

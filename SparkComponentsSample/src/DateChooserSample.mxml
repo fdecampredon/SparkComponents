@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"
+			   xmlns:s="library://ns.adobe.com/flex/spark"
+			   xmlns:mx="library://ns.adobe.com/flex/mx"
+			   xmlns:klovis="http://www.kapit.fr/flex4/ui"
+			   xmlns:spark="http://francois.de-campredon.fr/spark-components" 
+			   minWidth="955" minHeight="600"
+			   creationComplete="application_creationCompleteHandler(event)"  >
+	
+	<fx:Script>
+		<![CDATA[
+			import com.deCampredon.spark.samples.Range;
+			import mx.events.CollectionEvent;
+			import mx.events.FlexEvent;
+			
+			import spark.events.TextOperationEvent;
+			
+			
+			protected function application_creationCompleteHandler(event:FlexEvent):void
+			{
+				sunTextInput.text = "S"
+				monTextInput.text = "M"
+				tueTextInput.text = "T"
+				wenTextInput.text = "W"
+				thuTextInput.text = "T"
+				friTextInput.text = "F"
+				satTextInput.text = "S"
+			}
+			
+			protected function disabledDaysCheckBoxs_changeHandler(event:Event):void
+			{
+				var disabledDays:Vector.<int> = new Vector.<int>();
+				if(sunCheckBox.selected)
+					disabledDays.push(0);
+				if(monCheckBox.selected)
+					disabledDays.push(1);
+				if(tueCheckBox.selected)
+					disabledDays.push(2);
+				if(wenCheckBox.selected)
+					disabledDays.push(3)
+				if(thuCheckBox.selected)
+					disabledDays.push(4)
+				if(friCheckBox.selected)
+					disabledDays.push(5);
+				if(satCheckBox.selected)
+					disabledDays.push(6)
+				sparkDateChooser.disabledDays = disabledDays;
+			}
+			
+			
+			private var dayNamesChanged:Boolean
+			protected function disabledDaysTextInputs_changeHandler(event:TextOperationEvent):void
+			{
+				dayNamesChanged = true;
+				invalidateProperties();
+			}
+			
+			override protected function commitProperties():void {
+				super.commitProperties()
+				if(dayNamesChanged) {
+					var dayNames:Vector.<String> = new Vector.<String>();
+					dayNames.push(sunTextInput.text)
+					dayNames.push(monTextInput.text)
+					dayNames.push(tueTextInput.text)
+					dayNames.push(wenTextInput.text)
+					dayNames.push(thuTextInput.text)
+					dayNames.push(friTextInput.text)
+					dayNames.push(satTextInput.text)
+					sparkDateChooser.dayNames = dayNames;
+					dayNamesChanged = false;
+				}
+			}
+			
+			
+			
+			protected function daterangeselector_changeHandler(event:Event):void
+			{
+				sparkDateChooser.selectableRange = {rangeStart : dateRangeSelector.selectedStartDate , rangeEnd : dateRangeSelector.selectedEndDate};
+			}
+			
+			protected function disabledRanges_collectionChangeHandler(event:CollectionEvent):void
+			{
+				sparkDateChooser.disabledRanges = disabledRanges.toArray();
+			}
+			
+			protected function addDisabledRangeButton_clickHandler(event:MouseEvent):void
+			{
+				disabledRanges.addItem(new Range());
+			}
+			
+			protected function removeDisabledRangeButton_clickHandler(event:MouseEvent):void
+			{
+				var range:Range = disabledRangesList.selectedItem as Range;
+				if(range) {
+				  disabledRanges.removeItem(range);
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<s:ArrayList id="disabledRanges" collectionChange="disabledRanges_collectionChangeHandler(event)" />
+	</fx:Declarations>
+	
+	<s:HGroup verticalAlign="top" horizontalCenter="0"  verticalCenter="0">
+		<spark:DateChooser id="sparkDateChooser"/>
+		<s:HGroup verticalAlign="baseline" >
+			<s:Form>
+				<s:layout>
+					<s:FormLayout paddingTop="-20" />
+				</s:layout>
+				<s:FormHeading label="Basic Properties"/>
+				<s:FormItem label="firstDayOfWeek : ">
+					<s:NumericStepper minimum="0" maximum="6" value="@{sparkDateChooser.firstDayOfWeek}"/>
+				</s:FormItem>
+				<s:FormItem label="selectedDate :">
+					<mx:DateField selectedDate="@{sparkDateChooser.selectedDate}"/>
+				</s:FormItem>
+				<s:FormItem label="displayedMonth :">
+					<s:NumericStepper maximum="11" minimum="0"
+									  value="@{sparkDateChooser.displayedMonth}"/>
+				</s:FormItem>
+				<s:FormItem label="displayedYear : ">
+					<s:NumericStepper maximum="{sparkDateChooser.maxYear}"
+									  minimum="{sparkDateChooser.minYear}"
+									  value="@{sparkDateChooser.displayedYear}"/>
+				</s:FormItem>
+				<s:FormHeading label="Label controls"/>
+				<s:FormItem label="monthSymbol :">
+					<s:TextInput text="@{sparkDateChooser.monthSymbol}"/>
+				</s:FormItem>
+				<s:FormItem label="yearSymbol : ">
+					<s:TextInput text="@{sparkDateChooser.yearSymbol}"/>
+				</s:FormItem>
+				<s:FormItem label="dayNames : ">
+					<s:TileGroup horizontalAlign="right" requestedRowCount="3">
+						<s:HGroup verticalAlign="middle">
+							<s:Label text="sun :"/>
+							<s:TextInput id="sunTextInput"
+										change="disabledDaysTextInputs_changeHandler(event)"
+										width="26"
+										maxChars="2" />
+						</s:HGroup>
+						<s:HGroup verticalAlign="middle">
+							<s:Label text="mon :"/>
+							<s:TextInput id="monTextInput"
+										change="disabledDaysTextInputs_changeHandler(event)"
+										width="26"
+										maxChars="2" />
+						</s:HGroup>
+						<s:HGroup verticalAlign="middle">
+							<s:Label text="tue :"/>
+							<s:TextInput id="tueTextInput"
+										change="disabledDaysTextInputs_changeHandler(event)"
+										width="26"
+										maxChars="2" />
+						</s:HGroup>
+						<s:HGroup verticalAlign="middle">
+							<s:Label text="wen :"/>
+							<s:TextInput id="wenTextInput"
+										change="disabledDaysTextInputs_changeHandler(event)"
+										width="26"
+										maxChars="2" />
+						</s:HGroup>
+						<s:HGroup verticalAlign="middle">
+							<s:Label text="thu :"/>
+							<s:TextInput id="thuTextInput"
+										change="disabledDaysTextInputs_changeHandler(event)"
+										width="26"
+										maxChars="2" />
+						</s:HGroup>
+						<s:HGroup verticalAlign="middle">
+							<s:Label text="fri :"/>
+							<s:TextInput id="friTextInput"
+										change="disabledDaysTextInputs_changeHandler(event)"
+										width="26"
+										maxChars="2" />
+						</s:HGroup>
+						<s:HGroup verticalAlign="middle">
+							<s:Label text="sat :"/>
+							<s:TextInput id="satTextInput"
+										change="disabledDaysTextInputs_changeHandler(event)"
+										width="26"
+										maxChars="2" />
+						</s:HGroup>
+					</s:TileGroup>
+				</s:FormItem>
+				<s:FormItem label="showToday : ">
+					<s:CheckBox selected="@{sparkDateChooser.showToday}"/>
+				</s:FormItem>
+				
+				<s:FormHeading label="Year Navigation"/>
+				<s:FormItem label="yearNavigationEnabled :">
+					<s:CheckBox selected="@{sparkDateChooser.yearNavigationEnabled}"/>
+				</s:FormItem>
+				<s:FormItem label="maxYear :">
+					<s:NumericStepper maximum="10000" minimum="-10000"
+									  value="@{sparkDateChooser.maxYear}"/>
+				</s:FormItem>
+				<s:FormItem label="minYear :">
+					<s:NumericStepper maximum="10000" minimum="-10000"
+									  value="@{sparkDateChooser.minYear}"/>
+				</s:FormItem>
+			</s:Form>
+			<s:Form>
+				<s:layout>
+					<s:FormLayout paddingTop="-20" />
+				</s:layout>
+				<s:FormHeading label="Enabled Days Control"/>
+				<s:FormItem label="disabledDays :">
+					<s:TileGroup horizontalAlign="right" requestedRowCount="3">
+						<s:HGroup verticalAlign="middle">
+							<s:Label text="sun :"/>
+							<s:CheckBox id="sunCheckBox"
+										change="disabledDaysCheckBoxs_changeHandler(event)"/>
+						</s:HGroup>
+						<s:HGroup verticalAlign="middle">
+							<s:Label text="mon :"/>
+							<s:CheckBox id="monCheckBox"
+										change="disabledDaysCheckBoxs_changeHandler(event)"/>
+						</s:HGroup>
+						<s:HGroup verticalAlign="middle">
+							<s:Label text="tue :"/>
+							<s:CheckBox id="tueCheckBox"
+										change="disabledDaysCheckBoxs_changeHandler(event)"/>
+						</s:HGroup>
+						<s:HGroup verticalAlign="middle">
+							<s:Label text="wen :"/>
+							<s:CheckBox id="wenCheckBox"
+										change="disabledDaysCheckBoxs_changeHandler(event)"/>
+						</s:HGroup>
+						<s:HGroup verticalAlign="middle">
+							<s:Label text="thu :"/>
+							<s:CheckBox id="thuCheckBox"
+										change="disabledDaysCheckBoxs_changeHandler(event)"/>
+						</s:HGroup>
+						<s:HGroup verticalAlign="middle">
+							<s:Label text="fri :"/>
+							<s:CheckBox id="friCheckBox"
+										change="disabledDaysCheckBoxs_changeHandler(event)"/>
+						</s:HGroup>
+						<s:HGroup verticalAlign="middle">
+							<s:Label text="sat :"/>
+							<s:CheckBox id="satCheckBox"
+										change="disabledDaysCheckBoxs_changeHandler(event)"/>
+						</s:HGroup>
+					</s:TileGroup>
+				</s:FormItem>
+				<s:FormItem label="disabledRanges : ">
+					<s:VGroup>
+						<s:HGroup>
+							<s:Button label="add a range" click="addDisabledRangeButton_clickHandler(event)" />
+							<s:Button label="remove selected range" enabled="{disabledRangesList.selectedItem!=null}" click="removeDisabledRangeButton_clickHandler(event)" />
+						</s:HGroup>
+						<s:List id="disabledRangesList" width="100%" dataProvider="{disabledRanges}"  >
+							<s:layout>
+								<s:TileLayout horizontalGap="0" verticalGap="0"  requestedColumnCount="{disabledRanges.length>3?3:disabledRanges.length}"/>
+							</s:layout>
+							<s:itemRenderer>
+								<fx:Component>
+									<s:ItemRenderer width="200" height="200">
+										<fx:Script>
+											<![CDATA[
+												import com.deCampredon.spark.samples.Range;
+												import mx.events.CalendarLayoutChangeEvent;
+												
+												protected function datechooser_changeHandler(event:CalendarLayoutChangeEvent):void
+												{
+													if(dateChooser.selectedRanges && dateChooser.selectedRanges.length) {
+														var range:Object = dateChooser.selectedRanges[0];
+														Range(data).rangeStart = range.rangeStart;
+														Range(data).rangeEnd = range.rangeEnd;
+														if( range.rangeStart.time != range.rangeEnd.time)
+															return;
+													}
+													if(dateChooser.selectedDate) {
+														Range(data).rangeStart = dateChooser.selectedDate;
+														Range(data).rangeEnd = null;
+													}
+												}
+												
+											]]>
+										</fx:Script>
+										<mx:DateChooser id="dateChooser" allowMultipleSelection="true" change="datechooser_changeHandler(event)" verticalCenter="0" horizontalCenter="0" />
+									</s:ItemRenderer>
+								</fx:Component>
+							</s:itemRenderer>
+						</s:List>
+					</s:VGroup>
+				</s:FormItem>
+				<s:FormItem label="selectableRange : ">
+					<klovis:DateRangeSelector id="dateRangeSelector" change="daterangeselector_changeHandler(event)" />
+				</s:FormItem>
+			</s:Form>
+		</s:HGroup>
+	</s:HGroup>
+		
+</s:Application>

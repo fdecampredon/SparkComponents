@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<flexLibProperties includeAllClasses="true" useMultiPlatformConfig="false" version="3">
+  <includeClasses>
+    <classEntry path="com.deCampredon.spark.components.supportClass.DateChooserGrid"/>
+    <classEntry path="com.deCampredon.spark.components.supportClass.DateChooserDataGrid"/>
+  </includeClasses>
+  <includeResources>
+    <resourceEntry destPath="design.xml" sourcePath="design.xml"/>
+    <resourceEntry destPath="defaults.css" sourcePath="defaults.css"/>
+  </includeResources>
+  <namespaceManifests>
+    <namespaceManifestEntry manifest="manifest.xml" namespace="http://francois.de-campredon.fr/spark-components"/>
+  </namespaceManifests>
+</flexLibProperties>

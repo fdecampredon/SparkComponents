@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" 
+			   xmlns:spark="http://francois.de-campredon.fr/spark-components"
+			   minWidth="955" minHeight="600" 
+			   creationComplete="application_creationCompleteHandler(event)" >
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			
+			protected function application_creationCompleteHandler(event:FlexEvent):void
+			{
+				popupButton.hitAreaAdditions =	Vector.<DisplayObject>([closeDropDown]);
+			}
+			
+			protected function hitAreaCheckBox_changeHandler(event:Event):void
+			{
+				var hitAreaAdditions:Vector.<DisplayObject> = Vector.<DisplayObject>([closeDropDown]);
+				if(button1CheckBox.selected)
+					hitAreaAdditions.push(button1);
+				if(button2CheckBox.selected)
+					hitAreaAdditions.push(button2);
+				if(button3CheckBox.selected)
+					hitAreaAdditions.push(button3);
+				popupButton.hitAreaAdditions = hitAreaAdditions
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:HGroup verticalCenter="0" horizontalCenter="0">
+		<spark:PopUpButton id="popupButton" label="Hey">
+			<s:Label text="i am a label" />
+			<s:VGroup  top="40">
+				<s:DataGrid>
+					<s:dataProvider>
+						<s:ArrayList>
+							<fx:Object firstName="François" lastName="de Campredon" />
+							<fx:Object firstName="Jhon" lastName="Doe" />
+							<fx:Object firstName="Henri" lastName="the third" />
+						</s:ArrayList>
+					</s:dataProvider>
+				</s:DataGrid>
+				<s:Button id="button" label="Click Me" />
+			</s:VGroup>
+		</spark:PopUpButton>
+		<s:Form>
+			<s:FormHeading label="Controls"/>
+			<s:FormItem label="openDropDown" >
+				<s:Button label="openDropDown" click="popupButton.openDropDown()" />
+			</s:FormItem>
+			<s:FormItem label="closeDropDown" >
+				<s:Button id="closeDropDown" label="closeDropDown" click="popupButton.closeDropDown()" />
+			</s:FormItem>
+			<s:FormItem label="hitAreaAddition" >
+				<s:HGroup>
+					<s:Button id="button1"  label="Button 1"/>
+					<s:Button id="button2"  label="Button 2"/>
+					<s:Button id="button3"  label="Button 3"/>
+				</s:HGroup>
+			</s:FormItem>
+		</s:Form>
+		<s:Form>
+			<s:FormHeading label="Properties" />
+			<s:FormItem label="label">
+				<s:TextInput text="@{popupButton.label}" />
+			</s:FormItem>
+			<s:FormItem label="openOnRollOver">
+				<s:CheckBox selected="@{popupButton.openOnRollOver}" />
+			</s:FormItem>
+			<s:FormItem label="rollOverOpenDelay">
+				<s:NumericStepper value="@{popupButton.rollOverOpenDelay}" minimum="0" maximum="10000" />
+			</s:FormItem>
+			<s:FormItem label="hitAreaAddition">
+				<s:VGroup>
+					<s:HGroup>
+						<s:Label text="Button 1 : " />
+						<s:CheckBox id="button1CheckBox" change="hitAreaCheckBox_changeHandler(event)"/>
+					</s:HGroup>
+					<s:HGroup>
+						<s:Label text="Button 2 : " />
+						<s:CheckBox id="button2CheckBox" change="hitAreaCheckBox_changeHandler(event)"/>
+					</s:HGroup>
+					<s:HGroup>
+						<s:Label text="Button 3 : " />
+						<s:CheckBox id="button3CheckBox" change="hitAreaCheckBox_changeHandler(event)"/>
+					</s:HGroup>
+				</s:VGroup>
+			</s:FormItem>
+		</s:Form>
+	</s:HGroup>
+</s:Application>

@@ -1,0 +1,18 @@
+/* CSS file */
+@namespace spark "http://francois.de-campredon.fr/spark-components";
+spark|DateChooser{
+	skinClass : ClassReference("com.deCampredon.spark.skins.DateChooserSkin");
+	borderAlpha :  0.5;
+	borderColor : 0;
+	borderVisible : true;
+	cornerRadius : 0;
+	dropShadowVisible : false;
+	backgroundAlpha : 1.0;
+	backgroundColor : #FFFFFF;
+}
+
+spark|PopUpButton {
+	skinClass : ClassReference("com.deCampredon.spark.skins.PopUpButtonSkin");
+	borderVisible : true;
+	dropShadowVisible : true;
+}
