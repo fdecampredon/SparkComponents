@@ -119,7 +119,7 @@
 					<s:FormLayout paddingTop="-20" />
 				</s:layout>
 				<s:FormHeading label="Locale"/>
-				<s:FormItem>
+				<s:FormItem label="current locale : ">
 					<s:DropDownList id="localeDropDownList" change="localeComboBox_changeHandler(event)">
 						<s:ArrayList>
 							<fx:String>en_US</fx:String>
