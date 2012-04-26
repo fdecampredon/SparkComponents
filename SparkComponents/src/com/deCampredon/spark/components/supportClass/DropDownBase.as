@@ -11,6 +11,8 @@ package com.deCampredon.spark.components.supportClass
 	import flash.display.DisplayObject;
 	import flash.events.Event;
 	
+	import mx.events.FlexEvent;
+	
 	import spark.components.SkinnableContainer;
 	import spark.components.supportClasses.ButtonBase;
 	import spark.components.supportClasses.DropDownController;
@@ -421,6 +423,7 @@ package com.deCampredon.spark.components.supportClass
 		 */
 		protected function dropDownController_openHandler(event:DropDownEvent):void
 		{
+			addEventListener(FlexEvent.UPDATE_COMPLETE, open_updateCompleteHandler);
 			invalidateSkinState();  
 		}
 		
@@ -438,7 +441,19 @@ package com.deCampredon.spark.components.supportClass
 		protected function dropDownController_closeHandler(event:DropDownEvent):void
 		{
 			invalidateSkinState();
+			dispatchEvent(new DropDownEvent(DropDownEvent.CLOSE));
 			
 		}
+		
+		
+		/**
+		 * @private
+		 */
+		protected function open_updateCompleteHandler(event:FlexEvent):void
+		{
+			removeEventListener(FlexEvent.UPDATE_COMPLETE, open_updateCompleteHandler);
+			dispatchEvent(new DropDownEvent(DropDownEvent.OPEN));
+		}
+		
 	}
 }

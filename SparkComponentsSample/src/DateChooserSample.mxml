@@ -10,21 +10,25 @@
 	<fx:Script>
 		<![CDATA[
 			import com.deCampredon.spark.samples.Range;
+			
 			import mx.events.CollectionEvent;
 			import mx.events.FlexEvent;
 			
+			import spark.events.IndexChangeEvent;
 			import spark.events.TextOperationEvent;
 			
 			
 			protected function application_creationCompleteHandler(event:FlexEvent):void
 			{
-				sunTextInput.text = "S"
-				monTextInput.text = "M"
-				tueTextInput.text = "T"
-				wenTextInput.text = "W"
-				thuTextInput.text = "T"
-				friTextInput.text = "F"
-				satTextInput.text = "S"
+				sunTextInput.text = "S";
+				monTextInput.text = "M";
+				tueTextInput.text = "T";
+				wenTextInput.text = "W";
+				thuTextInput.text = "T";
+				friTextInput.text = "F";
+				satTextInput.text = "S";
+				resourceManager.localeChain = ['en_US'];
+				localeDropDownList.selectedItem = "en_US";
 			}
 			
 			protected function disabledDaysCheckBoxs_changeHandler(event:Event):void
@@ -96,6 +100,11 @@
 				}
 			}
 			
+			protected function localeComboBox_changeHandler(event:IndexChangeEvent):void
+			{
+				resourceManager.localeChain = [localeDropDownList.selectedItem]
+			}
+			
 		]]>
 	</fx:Script>
 	<fx:Declarations>
@@ -109,6 +118,15 @@
 				<s:layout>
 					<s:FormLayout paddingTop="-20" />
 				</s:layout>
+				<s:FormHeading label="Locale"/>
+				<s:FormItem>
+					<s:DropDownList id="localeDropDownList" change="localeComboBox_changeHandler(event)">
+						<s:ArrayList>
+							<fx:String>en_US</fx:String>
+							<fx:String>fr_FR</fx:String>
+						</s:ArrayList>
+					</s:DropDownList>
+				</s:FormItem>
 				<s:FormHeading label="Basic Properties"/>
 				<s:FormItem label="firstDayOfWeek : ">
 					<s:NumericStepper minimum="0" maximum="6" value="@{sparkDateChooser.firstDayOfWeek}"/>

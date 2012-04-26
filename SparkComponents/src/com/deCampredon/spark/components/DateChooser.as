@@ -483,6 +483,7 @@ package com.deCampredon.spark.components
 			displayedYear = currentDate.fullYear;
 			monthNames = null;
 			dayNames = null;
+			firstDayOfWeek  = NaN;
 		}
 		
 		
@@ -703,7 +704,7 @@ package com.deCampredon.spark.components
 		/**
 		 *  @private
 		 */
-		private var firstDayOfWeekOverride:int;
+		private var firstDayOfWeekOverride:Number;
 		
 		/**
 		 *  @private
@@ -726,7 +727,7 @@ package com.deCampredon.spark.components
 	     *  @default 0 (Sunday)
 		 *  
 		 */
-		public function get firstDayOfWeek():int
+		public function get firstDayOfWeek():Number
 		{
 			return _firstDayOfWeek;
 		}
@@ -734,14 +735,18 @@ package com.deCampredon.spark.components
 		/**
 		 *  @private
 		 */
-		public function set firstDayOfWeek(value:int):void
+		public function set firstDayOfWeek(value:Number):void
 		{
 			if (firstDayOfWeek == value)
 				return;
 			
 			firstDayOfWeekOverride  = value;
 			
-			_firstDayOfWeek = value;
+			_firstDayOfWeek = !isNaN(value)  ?
+										int(value) :
+										resourceManager.getInt(
+											"controls", "firstDayOfWeek");
+			
 			firstDayOfWeekChanged = true;
 			
 			invalidateProperties();
@@ -1511,7 +1516,7 @@ package com.deCampredon.spark.components
 			if(selectedDateChanged) {
 				commitVisualSelection(true);
 			}
-			if(displayedMonthChanged || displayedYearChanged || disabledRangesChanged) {
+			if(firstDayOfWeekChanged || displayedMonthChanged || displayedYearChanged || disabledRangesChanged) {
 				updateGridDataProvider();
 				if(!selectedDateChanged) {
 					commitVisualSelection(false);
