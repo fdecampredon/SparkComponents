@@ -1473,7 +1473,7 @@ package com.deCampredon.spark.components
 					}
 					if(date.date == today.date) {
 						cellPosition.rowIndex = currentWeek;
-						cellPosition.columnIndex = (today.day+firstDayOfWeek)%7;
+						cellPosition.columnIndex = (today.day+7-firstDayOfWeek)%7;
 						return cellPosition;
 					}
 					date.date++;
@@ -1866,7 +1866,7 @@ package com.deCampredon.spark.components
 					if(date.date == selectedDate.date) {
 						var cellPosition:CellPosition = new CellPosition();
 						cellPosition.rowIndex = currentWeek;
-						cellPosition.columnIndex = (date.day+firstDayOfWeek)%7;
+						cellPosition.columnIndex = (date.day+7-firstDayOfWeek)%7;
 						selectedCellPosition = cellPosition;
 						return;
 					}
