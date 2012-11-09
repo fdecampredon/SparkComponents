@@ -63,7 +63,7 @@ package com.deCampredon.spark.components
 	 *  @eventType com.deCampredon.sparkDateChooser.events.DateChooserScrollEvent.SCROLL
 	 *  
 	 */
-	[Event(name="scroll", type="com.deCampredon.spark.events.DateChooserSelectionEvent")]
+	[Event(name="scroll", type="com.deCampredon.spark.events.DateChooserScrollEvent")]
 
 	//--------------------------------------
 	//  Styles
